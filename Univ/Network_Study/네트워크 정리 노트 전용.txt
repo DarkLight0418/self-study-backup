@@ -63,21 +63,18 @@ TCP 보안
 ---
 웹 & HTTP
 
-p18
-Web & HTTP
+p18 [Web & HTTP]
 - 웹 페이지는 객체로 구성되고, 서로 다른 웹 서버에 저장 가능
 - HTML 파일로 구성, 참조된 객체가 포함됨, URL로 주소 지정 가능
 - 일종의 경로 찾아가는 과정
 
-p19
-HTTP(HyperText Transport Protocol) 개요
+p19 [HTTP(HyperText Transport Protocol) 개요]
 웹의 응용(Application) Layer 프로토콜
 - 클라이언트/서버 모델
   - 클라이언트 : 요청/수신 후 표시하는 브라우저
   - 서버 : HTTP를 통해 클라이언트 객체 요청이 들어올 때 서버를 통해 전송
 
-p20
-HTTP를 간단히 살펴보자면
+p20 [HTTP를 간단히 살펴보자면]
 - HTTP는 TCP를 가짐. 또한 상태가 없음(Stateless)
 (즉, 뒤로 가기를 누르면 URL 뒷 페이지를 다시 가져옴)
 
@@ -87,9 +84,7 @@ HTTP 서버는 웹 서버를 통해 응용 계층 메시지 교환 후 종료
 !!알아두기!!
 프로토콜은 상태 유지 자체가 매우 어려움. 서로 충돌 시 유지 X, 조정되어야 함.
 
-p21
-
-비연결형 HTTP VS 연결형 HTTP
+p21 [비연결형 HTTP VS 연결형 HTTP]
 - 비연결형(Non-persistent)
   - 최소한 하나의 객체를 보내야 하는 것이 특징
   - 다시 보내게 되면 다시 오픈 후 전송 및 종료
@@ -124,13 +119,31 @@ p26
 
 HTTP 요청/응답 메시지는 헤더에 붙임
 
-p27[HTTP 제네럴 포맷](|||)
+p27 [HTTP 제네럴 포맷](|||)
 
   header lines => host ~ user agent
-
 
 p28 [다른 HTTP 요청 메시지 형태]
 - POST : 이거 POST해서 전달
 - GET : 이거 줘
 - PUT : 이거 갱신할게
 
+p29 [HTTP 응답 메시지]
+  헤더 라인에 Date를 넣는 이유
+  - 싱크를 맞추기 위해
+
+p30 [HTTP 상태 코드]
+
+- 200 OK
+- 301 Moved Permanently ((URL 등이)영구적으로 이동된)
+- 400 Bad request
+- 404 Not Found
+- 505 HTTP Version Not Supported
+
+p31~p33 [쿠키(cookie)]
+  기본적으로 HTTP는 상태가 없어서 상태 정보를 저장/관리하기 위한 게 필요
+  -> 그래서 나온 것이 '쿠키'
+  -> 저장 장소 : 내(클라이언트) PC 웹 브라우저
+  -> 트랜잭션 및 상태 유지
+
+p34 [쿠키 예시(|||)]
