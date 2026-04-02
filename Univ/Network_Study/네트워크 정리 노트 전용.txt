@@ -234,4 +234,46 @@ p51 [E-mail: the RFC]
 
 
 p52 [예제 앨리스 -> 밥]
+```
+나(보내는 사람) -> 나의 서버 -> 받는 사람 서버 -> 받는 사람
+```
 
+즉 - 각각 서버를 거치는 구조
+
+p56 [Mail message format]
+
+SMTP : 이메일 메시지 교환 - RFC 531 (HTTP 같은)
+이메일 메시지를 위한 문맥 정의 - RFC 822 (HTML 같은)
+
+header에는 To, From, Subject(제목) 포함
+body에는 ASCII 문자로 이루어진 메시지 저장
+
+p57 [Mail Access Protocol]
+SMTP, IMAP -> HTTP에 들어있음
+* 필요 이유 : 메일 서버 서로 간에는 동일한 Port Number를 사용해야 함.
+-> SMTP
+
+---
+DNS(Domain Name System)
+p59
+- 많은 이름 서버의 계층 구조로 구현된 분산 데이터베이스
+- 응용 계층 프로토콜 중 하나
+- IP <-> 이름 간 매칭 필요
+
+- 로드 밸런싱 관리 : 1대1 / "다대1"
+
+p60 [DNS Services, Structure]
+DNS Service : 호스트 이름을 IP 주소로 변환
+
+로드 밸런싱을 통한 부하 분산
+
+** 왜 DNS를 하나로 하면 안되는가? **
+- "Single Point Of Failure" : SPOF
+- 어마무시하게 많은 트래픽
+- 거리가 있는 중앙 데이터베이스
+- 유지보수
+- 스케일의 부족(매일 6천억번 DNS Query가 오고감)
+
+-> 그러므로 DNS는 UDP 사용 (잘못 요청하면 다시 보내면 됨)
+
+p61 [ 분산된, 계층적인 DB : DNS ]
