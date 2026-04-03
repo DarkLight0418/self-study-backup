@@ -276,4 +276,11 @@ DNS Service : 호스트 이름을 IP 주소로 변환
 
 -> 그러므로 DNS는 UDP 사용 (잘못 요청하면 다시 보내면 됨)
 
-p61 [ 분산된, 계층적인 DB : DNS ]
+p61 [ 분산된, 계층적인 DB : DNS ] (|||)
+- Root DNS Servers
+  - Top Level Domain(.com, .org, .edu, ...)
+    - Authoritative
+      ( .com -> yahoo.com DNS Servers, ...)
+      ( .org -> pbs.org DNS Servers, ...)
+
+p62 [root name servers]
