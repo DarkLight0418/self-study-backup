@@ -284,3 +284,26 @@ p61 [ 분산된, 계층적인 DB : DNS ] (|||)
       ( .org -> pbs.org DNS Servers, ...)
 
 p62 [root name servers]
+
+- 이름 해석이 불가능한 서버의 이름을 공식 지정 관리,
+ICANN - 루트 DNS 관리 기관
+
+p63 [TLD]
+- Top-Level Domain(TLD) 서버 : 
+국가 도메인(.kr 등), 네트워크 솔루션(.com 등), Educause(.edu)
+
+- Authoritative DNS servers : 기관이 가지고 있는 '자체 DNS 서버'
+
+- (필기한 내용 점검 필요)
+
+p64 [로컬 DNS Server]
+- 계층 구조에 엄격히 속하지 않음.
+- 학교, 기관 등의 ISP : 기본 DNS 서버라고도 불림
+
+p65 [ DNS 이름 결정 1 : 반복적 쿼리 ]
+-> 내가 DNS 모름 => 쟤한테 물어봐!! -> 알려줘서 연결시킴
+
+p66 [ DNS 이름 결정 2 : 재귀적 쿼리 ]
+-> 내가 DNS 모름 -> 순서대로(Root -> TLD -> 자체 DNS)
+
+p67 [캐싱, 업데이팅 DNS 레코드]
