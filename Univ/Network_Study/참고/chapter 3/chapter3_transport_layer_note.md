@@ -469,18 +469,27 @@ UDP 성격
 
 ## 4-9. Go-Back-N (GBN)
 
+- 의미
+  - sender가 window 크기 N만큼 여러 패킷을 연속 전송할 수 있는 pipelining 방식
+  - 하나가 손실되면 **그 패킷부터 뒤를 다시 보내는 방식**
+
 - sender
   - 윈도우 크기 N
   - ACK는 cumulative ACK
+  - `send_base` = 가장 오래된 미확인 패킷
+  - `nextseqnum` = 다음에 보낼 패킷 번호
   - 가장 오래된 미확인 패킷 기준으로 타이머 하나 사용
 
 - timeout 발생 시
-  - 그 패킷부터 뒤에 있는 것까지 **몰아서 재전송**
+  - `send_base`부터 `nextseqnum - 1`까지 **몰아서 재전송**
 
 - receiver
   - in-order만 정상 처리
-  - out-of-order는 버리거나 구현에 따라 다를 수 있음
+  - out-of-order는 보통 버림
   - 가장 마지막 in-order 패킷 기준으로 ACK 재전송
+
+- 왜 비효율적인가?
+  - 패킷 하나만 빠져도 뒤 패킷까지 다시 보내야 할 수 있음
 
 - 장점
   - 구현 단순
@@ -929,7 +938,7 @@ Congestion Control = 네트워크 보호
   - 초기 sequence number는 무엇인지
   - 상태를 어떻게 둘지
   - 서로 살아 있는지
-  를 확인해야 함
+    를 확인해야 함
 
 ## 8-2. 2-way handshake가 위험한 이유
 
@@ -1241,7 +1250,7 @@ Congestion Control : network 전체 보호
 - 시험에서는 보통
   - timeout은 더 심각한 신호
   - triple duplicate ACK는 그보다는 덜 심각한 신호
-  로 정리하면 좋다
+    로 정리하면 좋다
 
 ## 10-7. TCP CUBIC (p125 ~ p126)
 
@@ -1467,96 +1476,96 @@ QUIC 장점
 
 ## 1. TCP vs UDP
 
-| 항목 | TCP | UDP |
-|---|---|---|
-| 연결 설정 | O | X |
-| 신뢰성 | O | X |
-| 순서 보장 | O | X |
-| 흐름 제어 | O | X |
-| 혼잡 제어 | O | X |
-| 헤더/구조 | 더 복잡 | 더 단순 |
-| 대표 감각 | 정확하고 관리형 | 빠르고 단순형 |
-| 예시 | 웹, 파일, 메일 | DNS, 일부 스트리밍, HTTP/3 기반 |
+| 항목      | TCP             | UDP                             |
+| --------- | --------------- | ------------------------------- |
+| 연결 설정 | O               | X                               |
+| 신뢰성    | O               | X                               |
+| 순서 보장 | O               | X                               |
+| 흐름 제어 | O               | X                               |
+| 혼잡 제어 | O               | X                               |
+| 헤더/구조 | 더 복잡         | 더 단순                         |
+| 대표 감각 | 정확하고 관리형 | 빠르고 단순형                   |
+| 예시      | 웹, 파일, 메일  | DNS, 일부 스트리밍, HTTP/3 기반 |
 
 ## 2. Flow Control vs Congestion Control
 
-| 항목 | Flow Control | Congestion Control |
-|---|---|---|
-| 보호 대상 | 수신자 버퍼 | 네트워크 전체 |
-| 기준 변수 | rwnd | cwnd |
-| 질문 | 상대가 더 받을 수 있나? | 망이 더 버틸 수 있나? |
-| 문제 원인 | receiver가 느림 | 라우터/링크 혼잡 |
+| 항목      | Flow Control            | Congestion Control    |
+| --------- | ----------------------- | --------------------- |
+| 보호 대상 | 수신자 버퍼             | 네트워크 전체         |
+| 기준 변수 | rwnd                    | cwnd                  |
+| 질문      | 상대가 더 받을 수 있나? | 망이 더 버틸 수 있나? |
+| 문제 원인 | receiver가 느림         | 라우터/링크 혼잡      |
 
 ## 3. GBN vs SR
 
-| 항목 | GBN | SR |
-|---|---|---|
-| ACK 방식 | 누적 ACK | 개별 ACK |
-| out-of-order 처리 | 보통 버림 | 버퍼링 가능 |
-| 재전송 범위 | 손실 이후 몰아서 | 손실된 것만 |
-| 타이머 | 보통 oldest 기준 1개 | 패킷별 |
-| 구현 난이도 | 낮음 | 높음 |
-| 효율 | 낮을 수 있음 | 더 좋을 수 있음 |
+| 항목              | GBN                  | SR              |
+| ----------------- | -------------------- | --------------- |
+| ACK 방식          | 누적 ACK             | 개별 ACK        |
+| out-of-order 처리 | 보통 버림            | 버퍼링 가능     |
+| 재전송 범위       | 손실 이후 몰아서     | 손실된 것만     |
+| 타이머            | 보통 oldest 기준 1개 | 패킷별          |
+| 구현 난이도       | 낮음                 | 높음            |
+| 효율              | 낮을 수 있음         | 더 좋을 수 있음 |
 
 ## 4. stop-and-wait vs pipelining
 
-| 항목 | stop-and-wait | pipelining |
-|---|---|---|
-| outstanding packet 수 | 1개 | 여러 개 |
-| 구현 | 단순 | 복잡 |
-| 성능 | RTT 크면 비효율 | 활용도 높음 |
-| 필요 요소 | 기본 ACK/재전송 | window, buffering, 큰 seq 공간 |
+| 항목                  | stop-and-wait   | pipelining                     |
+| --------------------- | --------------- | ------------------------------ |
+| outstanding packet 수 | 1개             | 여러 개                        |
+| 구현                  | 단순            | 복잡                           |
+| 성능                  | RTT 크면 비효율 | 활용도 높음                    |
+| 필요 요소             | 기본 ACK/재전송 | window, buffering, 큰 seq 공간 |
 
 ## 5. cumulative ACK vs duplicate ACK
 
-| 항목 | cumulative ACK | duplicate ACK |
-|---|---|---|
+| 항목 | cumulative ACK             | duplicate ACK              |
+| ---- | -------------------------- | -------------------------- |
 | 의미 | 특정 번호 이전까지 다 받음 | 아직 특정 번호가 비어 있음 |
-| 장점 | 중간 ACK 손실 커버 가능 | 손실 조기 감지 가능 |
-| 활용 | 기본 TCP ACK | fast retransmit |
+| 장점 | 중간 ACK 손실 커버 가능    | 손실 조기 감지 가능        |
+| 활용 | 기본 TCP ACK               | fast retransmit            |
 
 ## 6. rwnd vs cwnd
 
-| 항목 | rwnd | cwnd |
-|---|---|---|
-| 뜻 | receive window | congestion window |
-| 결정 주체 | receiver | sender |
-| 목적 | 버퍼 overflow 방지 | 네트워크 혼잡 방지 |
-| 관점 | 수신자 상태 | 네트워크 상태 |
+| 항목      | rwnd               | cwnd               |
+| --------- | ------------------ | ------------------ |
+| 뜻        | receive window     | congestion window  |
+| 결정 주체 | receiver           | sender             |
+| 목적      | 버퍼 overflow 방지 | 네트워크 혼잡 방지 |
+| 관점      | 수신자 상태        | 네트워크 상태      |
 
 ## 7. Slow Start vs Congestion Avoidance
 
-| 항목 | Slow Start | Congestion Avoidance |
-|---|---|---|
-| 증가 방식 | 빠름(지수적 감각) | 느림(선형) |
-| 시점 | 연결 초반 / timeout 후 | ssthresh 이후 |
-| 목적 | 빠른 초기 탐색 | 조심스러운 미세 탐색 |
+| 항목      | Slow Start             | Congestion Avoidance |
+| --------- | ---------------------- | -------------------- |
+| 증가 방식 | 빠름(지수적 감각)      | 느림(선형)           |
+| 시점      | 연결 초반 / timeout 후 | ssthresh 이후        |
+| 목적      | 빠른 초기 탐색         | 조심스러운 미세 탐색 |
 
 ## 8. Tahoe vs Reno vs CUBIC
 
-| 항목 | Tahoe | Reno | CUBIC |
-|---|---|---|
-| 손실 대응 | 보수적 | 더 개선됨 | 고속 환경에 강점 |
-| 특징 | timeout 성격 강함 | fast recovery 활용 | Wmax 기준 cubic 증가 |
-| 감각 | 안정성 우선 | 성능 균형 | 현대 고속 서버 환경 적합 |
+| 항목      | Tahoe             | Reno               | CUBIC                    |
+| --------- | ----------------- | ------------------ | ------------------------ |
+| 손실 대응 | 보수적            | 더 개선됨          | 고속 환경에 강점         |
+| 특징      | timeout 성격 강함 | fast recovery 활용 | Wmax 기준 cubic 증가     |
+| 감각      | 안정성 우선       | 성능 균형          | 현대 고속 서버 환경 적합 |
 
 ## 9. 2-way handshake vs 3-way handshake
 
-| 항목 | 2-way | 3-way |
-|---|---|---|
-| 상태 확인 | 불충분 | 양방향 확인 가능 |
-| half-open 위험 | 큼 | 줄어듦 |
-| duplicate data 문제 | 위험 | 더 안전 |
-| 실제 TCP 사용 | X | O |
+| 항목                | 2-way  | 3-way            |
+| ------------------- | ------ | ---------------- |
+| 상태 확인           | 불충분 | 양방향 확인 가능 |
+| half-open 위험      | 큼     | 줄어듦           |
+| duplicate data 문제 | 위험   | 더 안전          |
+| 실제 TCP 사용       | X      | O                |
 
 ## 10. TCP 기반 HTTP/2 vs QUIC 기반 HTTP/3
 
-| 항목 | HTTP/2 over TCP | HTTP/3 over QUIC |
-|---|---|---|
-| 기반 | TCP + TLS | QUIC over UDP |
-| 핸드셰이크 | 상대적으로 길다 | 더 빠를 수 있음 |
+| 항목         | HTTP/2 over TCP  | HTTP/3 over QUIC |
+| ------------ | ---------------- | ---------------- |
+| 기반         | TCP + TLS        | QUIC over UDP    |
+| 핸드셰이크   | 상대적으로 길다  | 더 빠를 수 있음  |
 | HOL blocking | TCP 레벨 영향 큼 | stream 단위 완화 |
-| 유연성 | 낮음 | 높음 |
+| 유연성       | 낮음             | 높음             |
 
 ---
 
