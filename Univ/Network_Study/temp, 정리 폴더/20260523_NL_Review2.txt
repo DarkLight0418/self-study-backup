@@ -1,0 +1,136 @@
+1. IPv6
+
+헤더 40byte 고정, 128bit
+flow label - 특정 패킷 흐름 처리 매커니즘
+priority 존재
+
+2. 터널링 - IPv4 전달
+캡슐 집어넣음
+
+---
+
+1. SDN
+
+2. 매치 플러스 액션
+
+매치에 따라 특정한 액션들을 함.
+
+---
+
+1. MiddleBoxes - 어디에든 있다
+
+---
+
+NL-Control Plane
+
+forwarding - data plane
+routing - control plane 
+
+---
+
+1. 라우팅 프로토콜
+Good Paths
+
+2. 라우팅 알고리즘
+
+
+---
+
+링크 state - 다익스트라 알고리즘
+
+과정 다시 이해하고 넘어가기
+
+
+시간 복잡도 O(N^2)
+
+---
+
+거리 벡터 - 벨만 포드 알고리즘
+이웃 링크 노드 반복 경로 계산
+
+전체 라우팅 테이블 탐색 - 노드의 좋은 경로 따라서 수정 -> 내가 아는 경로 참조할 수 있게 정보 전송
+반복적, 비동기적임
+
+
+연산 과정 이해하고 넘어가기
+
+---
+
+LS DV 비교하는 부분 정리하기(5-74)
+
+---
+
+1. 인터넷 접근 scalable routing
+확장성이 좋아지게 되면서 나오게 된 Intra-AS, Inter-AS 등
+
+다른 것과 연결되어 있으면 Inter
+
+2. inter
+RIP, EIGRP, 'OSPF'
+
+3. OSPF
+publicly available
+
+등등
+
+4. 계층적 OSPF
+
+최적 경로 탐색 - 백본 영역
+
+---
+1. BGP
+
+eBGP vs iBGP
+
+OPEN, UPDATE, KEEPALIVE, NOTIFICATION
+
+---
+
+Hot potate routing
+
+인트라 코스트 제일 적은 거
+
+---
+
+SDN
+
+Per-router control plane 비교
+
+중앙 집중화!
+- 네트워크 구성 쉬움, 최적화, 빠른 진보 가능
+
+다양한 곳에서 쓰임
+
+---
+
+SDN Controller 구성 정의 확인할 것
+
+---
+
+OpenFlow 컨트롤
+
+-순서 기억-
+S1 스위치 -> SDN Controller -> 링크 state 수정, 계산
+-> 새로 table 제작 -> OpenFlow 통해서 새 페이지 install
+
+---
+
+ODL, ONOS
+
+---
+
+IP - ICMP
+
+메시지 교환 프로토콜 - ping
+
+TTL 값을 가지고 동작함
+
+---
+
+Network Management
+
+합리적인 비용으로 모니터링 테스트 등을 위해 설정
+
+SNMP / NETCONF / YANG
+
+이런 것들이 있음.
